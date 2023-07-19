@@ -45,7 +45,7 @@ services:
     volumes: 
       - ./data/letsencrypt:/etc/letsencrypt
       - ./data/certbot/logs:/var/log/letsencrypt/
-    command: certonly --standalone --force-renewal --email ${email} -d mail.${domain} --agree-tos
+    command: certonly --standalone --force-renewal --agree-tos
 
   certbot-renewal:
     image: certbot/certbot:latest
