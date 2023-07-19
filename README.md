@@ -7,7 +7,7 @@ This repository contains a fully configured docker compose environment running [
 ``` sh
 cp .example.env .env
 
-docker-compose run certbot --email me@email.com -d mail.example.com
+docker-compose run certbot certonly --standalone --force-renewal --email me@email.com -d mail.example.com --agree-tos
 ```
 
 ## Add & remove accounts

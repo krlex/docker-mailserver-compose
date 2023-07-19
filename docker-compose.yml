@@ -45,14 +45,3 @@ services:
     volumes: 
       - ./data/letsencrypt:/etc/letsencrypt
       - ./data/certbot/logs:/var/log/letsencrypt/
-    command: certonly --standalone --force-renewal --agree-tos
-
-  certbot-renewal:
-    image: certbot/certbot:latest
-    container_name: certbot-renewal
-    ports:
-      - "80:80"
-    volumes: 
-      - ./data/letsencrypt:/etc/letsencrypt
-      - ./data/certbot/logs:/var/log/letsencrypt/
-    command: renew --quiet
