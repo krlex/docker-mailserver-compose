@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+
+  mailserver:
+    image: ghcr.io/docker-mailserver/docker-mailserver:11.3.1
+    container_name: mailserver
+    hostname: ${HOSTNAME}
+    ports:
+      - "25:25"     # ESMTP Explicit TLS (transfer)
+      - "465:465"   # ESMTP Implicit TLS (submission)
+      - "587:587"   # ESMTP Explicit TLS (submission)
+      - "110:110"   # POP3 Explicit TLS (retrieval)
+      - "995:995"   # POP3 Implicit TLS (retrieval)
+      - "143:143"   # IMAP4 Explicit TLS (retrieval)
+      - "993:993"   # IMAP4 Implicit TLS (retrieval)
+    volumes:
+      - ./volumes/dms/mail-data/:/var/mail/
+      - ./volumes/dms/mail-state/:/var/mail-state/
+      - ./volumes/dms/mail-logs/:/var/log/mail/
+      - ./volumes/dms/config/:/tmp/docker-mailserver/
+      - ./data/letsencrypt:/etc/letsencrypt
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - ENABLE_POP3=${ENABLE_POP3}
+      - ENABLE_RSPAMD=${ENABLE_RSPAMD}
+      - ENABLE_CLAMAV=${ENABLE_CLAMAV}
+      - ENABLE_FAIL2BAN=${ENABLE_FAIL2BAN}
+      - ENABLE_SPAMASSASSIN=${ENABLE_SPAMASSASSIN}
+      - SSL_TYPE=${SSL_TYPE}
+      - SPOOF_PROTECTION=${SPOOF_PROTECTION}
+      - POSTFIX_MAILBOX_SIZE_LIMIT=${POSTFIX_MAILBOX_SIZE_LIMIT}
+      - POSTFIX_MESSAGE_SIZE_LIMIT=${POSTFIX_MESSAGE_SIZE_LIMIT}
+      - POSTMASTER_ADDRESS=${POSTMASTER_ADDRESS}
+      - SA_SPAM_SUBJECT=${SA_SPAM_SUBJECT}
+    cap_add:
+      - NET_ADMIN # For Fail2Ban to work
+    restart: always
+
+  certbot:
+    image: certbot/certbot:latest
+    container_name: certbot
+    ports:
+      - "80:80"
+    volumes: 
+      - ./data/letsencrypt:/etc/letsencrypt
+      - ./data/certbot/logs:/var/log/letsencrypt/
+    command: certonly --standalone --force-renewal --email ${email} -d mail.${domain} --agree-tos
+
+  certbot-renewal:
+    image: certbot/certbot:latest
+    container_name: certbot-renewal
+    ports:
+      - "80:80"
+    volumes: 
+      - ./data/letsencrypt:/etc/letsencrypt
+      - ./data/certbot/logs:/var/log/letsencrypt/
+    command: renew --quiet
