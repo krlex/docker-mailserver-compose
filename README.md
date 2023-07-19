@@ -5,9 +5,23 @@ This repository contains a fully configured docker compose environment running [
 ## Configure the server
 
 ``` sh
+# Copy env and replace values (ONLY: HOSTNAME, POSTMASTER_ADDRESS)
 cp .example.env .env
 
-docker-compose run certbot certonly --standalone --force-renewal --email me@email.com -d mail.example.com --agree-tos
+# Obtain cert for specific domain
+docker run --rm -it \
+  -v "${PWD}/docker-data/certbot/certs/:/etc/letsencrypt/" \
+  -v "${PWD}/docker-data/certbot/logs/:/var/log/letsencrypt/" \
+  -p 80:80 \
+  certbot/certbot certonly --standalone -d mail.example.com
+
+# Renew all certs
+docker run --rm -it \
+  -v "${PWD}/docker-data/certbot/certs/:/etc/letsencrypt/" \
+  -v "${PWD}/docker-data/certbot/logs/:/var/log/letsencrypt/" \
+  -p 80:80 \
+  -p 443:443 \
+  certbot/certbot renew
 ```
 
 ## Add & remove accounts
