@@ -19,7 +19,7 @@ services:
       - ./volumes/dms/mail-state/:/var/mail-state/
       - ./volumes/dms/mail-logs/:/var/log/mail/
       - ./volumes/dms/config/:/tmp/docker-mailserver/
-      - ./volumes/letsencrypt:/etc/letsencrypt
+      - ./volumes/certbot/certs/:/etc/letsencrypt
       - /etc/localtime:/etc/localtime:ro
     environment:
       - ENABLE_POP3=${ENABLE_POP3}
