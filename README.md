@@ -10,18 +10,24 @@ cp .example.env .env
 
 # Obtain cert for specific domain
 docker run --rm -it \
-  -v "${PWD}/docker-data/certbot/certs/:/etc/letsencrypt/" \
-  -v "${PWD}/docker-data/certbot/logs/:/var/log/letsencrypt/" \
+  -v "${PWD}/volumes/certbot/certs/:/etc/letsencrypt/" \
+  -v "${PWD}/volumes/certbot/logs/:/var/log/letsencrypt/" \
   -p 80:80 \
   certbot/certbot certonly --standalone -d mail.example.com
 
 # Renew all certs
 docker run --rm -it \
-  -v "${PWD}/docker-data/certbot/certs/:/etc/letsencrypt/" \
-  -v "${PWD}/docker-data/certbot/logs/:/var/log/letsencrypt/" \
+  -v "${PWD}/volumes/certbot/certs/:/etc/letsencrypt/" \
+  -v "${PWD}/volumes/certbot/logs/:/var/log/letsencrypt/" \
   -p 80:80 \
   -p 443:443 \
   certbot/certbot renew
+
+# Start docker-compose config
+docker-compose up -d
+
+# Add user
+docker exec -ti mailserver setup email add postmaster@example.com
 ```
 
 ## Add & remove accounts
