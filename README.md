@@ -47,6 +47,24 @@ docker exec -ti mailserver setup config dkim
 | TXT  | @               | v=spf1 mx ~all                                      |
 | TXT  | mail            | v=spf1 mx ~all                                      |
 
+## Connect with email client
+
+In order to actually send emails you will need to connect an email client to the server. The following are the details to use to connect to the server. We have not included an auto configuration so this must be set manually.
+
+| Incoming (IMAP) |                 |
+| --------------- | --------------- |
+| protocol        | IMAP            |
+| port            | 143             |
+| security        | STARTTLS        |
+| authentication  | Normal Password |
+
+| Outgoing (SMTP) |                 |
+| --------------- | --------------- |
+| protocol        | SMTP            |
+| port            | 587             |
+| security        | STARTTLS        |
+| authentication  | Normal Password |
+
 ## Working with the system
 
 This is a list of commands used to work with a configured instance of docker mail server.
