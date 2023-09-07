@@ -54,7 +54,7 @@ services:
     image: roundcube/roundcubemail:1.6.2-apache
     container_name: roundcube
     ports:
-      - "80:80"
+      - "443:80"
     volumes:
       - ./volumes/postgres/data:/var/lib/postgresql/data
     environment:
@@ -73,3 +73,15 @@ services:
     depends_on:
       - mailserver
       - postgres
+
+  nginx:
+    image: nginx:1.25.2
+    container_name: nginx
+    ports:
+      - "443:443"
+    volumes:
+      - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./volumes/certbot/certs/:/etc/letsencrypt
+    restart: always
+    depends_on:
+      - roundcube
