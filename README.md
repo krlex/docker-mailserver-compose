@@ -51,6 +51,8 @@ docker exec -ti mailserver setup config dkim
 
 In order to actually send emails you will need to connect an email client to the server. The following are the details to use to connect to the server. We have not included an auto configuration so this must be set manually.
 
+**NOTE:** If using multiple domains be sure to use the root domain of the server as the host, not the domain you just added.
+
 | Incoming (IMAP) |                 |
 | --------------- | --------------- |
 | protocol        | IMAP            |
@@ -85,9 +87,9 @@ docker exec -ti mailserver setup email list
 
 ## Add other domains
 
-You can host emails of differnet domains on this server. You are required to generate new SSL certs and DKIM key as well as add DNS records to the new domain to get it to work.
+You can host emails of different domains on this server. You are required to generate new SSL certs and DKIM key as well as add DNS records to the new domain to get it to work.
 
-**NOTE:** be sure to set at least the A and MX records for the new domain before you start adding the new domain account.
+**NOTE:** Be sure to set at least the A and MX records for the new domain before you start adding the new domain account. When connecting with an email client be sure to use the root domain of the server as the host, not the domain you just added.
 
 ``` sh
 # Obtain cert for specific domain (CHANGE: mail.example.com)
