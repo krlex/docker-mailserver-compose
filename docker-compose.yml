@@ -53,8 +53,6 @@ services:
   roundcube:
     image: roundcube/roundcubemail:1.6.2-apache
     container_name: roundcube
-    ports:
-      - "443:80"
     volumes:
       - ./volumes/postgres/data:/var/lib/postgresql/data
     environment:
