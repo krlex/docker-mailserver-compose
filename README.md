@@ -135,3 +135,19 @@ docker run --rm -it \
   -p 443:443 \
   certbot/certbot renew
 ```
+
+## Enable Roundcube webmail containers
+
+We have included the necessary configuration to run a Roundcube webmail service in addition ot the mailserver itself. By default we do not have Roundcube enabled, this is because docker-mailserver is the main focus of this configuration and we assume that most users want to keep the mail server as lightweight and simple as possible. The mailserver runs as a single container with no DB but to run Roundcube it requires its own database and an nginx configuration. 
+
+To enable Roundcube simply uncomment the 3 required containers in the compose file, Add "DB_PASSWORD" in the .env and finally copy the nginx config and change the example domain to the actual domain you are using (mail.example.com).
+
+``` bash
+docker-compose down
+cp ./config/nginx/example.nginx.conf ./config/nginx/nginx.conf
+docker-compose up -d
+```
+
+## Web admin interface
+
+We currently do not have a web admin interface to manage the creation of users but this is something we are developing. We hope to contribute this feature directly to [docker-mailserver](https://github.com/docker-mailserver/docker-mailserver) in the future.
