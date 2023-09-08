@@ -51,7 +51,7 @@ services:
     restart: always
 
   roundcube:
-    image: roundcube/roundcubemail:1.6.2-apache
+    image: roundcube/roundcubemail:1.6.2-fpm-alpine
     container_name: roundcube
     volumes:
       - ./volumes/postgres/data:/var/lib/postgresql/data
@@ -79,7 +79,7 @@ services:
       - "443:443"
     volumes:
       - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./volumes/certbot/certs/:/etc/letsencrypt
+      - ./volumes/certbot/certs/:/etc/letsencrypt/
     restart: always
     depends_on:
       - roundcube
