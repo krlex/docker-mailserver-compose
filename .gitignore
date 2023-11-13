@@ -1,6 +1,7 @@
 .DS_Store
 node_modules
 volumes
+.vagrant/
 
 # local env files
 .env
